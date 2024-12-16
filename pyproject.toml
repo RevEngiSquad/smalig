@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "smalig"
+version = "0.1.0"
+description = "Smali ByteCode info (grammar) fetch tool written in Python"
+authors = [
+    { name = "AbhiTheModder", email = "allinoneallinone00@gmail.com" },
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["smali", "grammar", "parser", "android", "reverse-engineering"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Natural Language :: English",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing :: General",
+    "Topic :: Utilities",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    "PyYAML",
+    "jsbeautifier",
+]
+
+[project.urls]
+Homepage = "https://github.com/RevEngiSquad/smalig"
+Repository = "https://github.com/RevEngiSquad/smalig"
+
+[project.scripts]
+smalig = "smalig.cli.app:main"
+
+[tool.setuptools.package-data]
+smalig = ["grammar.yaml"]
+
+[tool.setuptools]
+packages = ["smalig", "smalig.cli", "smalig.utils"]

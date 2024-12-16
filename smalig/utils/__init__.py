@@ -58,12 +58,6 @@ class InstructionFetch:
     def __repr__(self):
         return f"InstructionFetch(instructions={self.instructions}, target={self.target}, name={self.name}, opcode={self.opcode}, format={self.format}, format_id={self.format_id}, syntax={self.syntax}, args_info={self.args_info}, short_desc={self.short_desc}, long_desc={self.long_desc}, note={self.note}, example={self.example}, example_desc={self.example_desc})"
 
-    def fetch_instruction(self, key: str) -> Dict:
-        for instruction in self.instructions:
-            if instruction[key] == self.target:
-                return instruction
-        return {}
-
     def fetch(self) -> Dict:
         for instruction in self.instructions:
             if instruction["opcode"] == self.target:

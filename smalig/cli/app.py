@@ -33,13 +33,14 @@ def help() -> None:
     print(textwrap.dedent(help_message))
 
 
-def app(file_path, target, json, out) -> None:
+def app(file_path, target, json, out, exact_match) -> None:
     """
         Base CLI function
     :param file_path: Path to the YAML file containing the Smali instruction data.
     :param target: The Smali instruction to fetch information for.
     :param json: Whether to output the result as JSON.
     :param out: The file to write the output to. If None, prints to console.
+    :param exact_match: Whether to perform an exact match on the target instruction.
     :return: None
 
     This function fetches information for a given Smali instruction from a YAML file and outputs the result.
@@ -53,7 +54,7 @@ def app(file_path, target, json, out) -> None:
     reader = YamlReader(file_path)
     instructions = reader.data
     try:
-        result = InstructionFetch(instructions, target)
+        result = InstructionFetch(instructions, target, exact_match)
     except KeyError:
         print(f"{target} not found!")
         return
@@ -82,6 +83,11 @@ def main() -> None:
     if "-h" in args or "--help" in args:
         help()
         return
+    
+    if "-m" in args:
+        exact_match = False
+    else:
+        exact_match = True
 
     if "-o" in args:
         try:
@@ -121,7 +127,7 @@ def main() -> None:
     if file_path == "":
         raise Exception("File path is empty")
 
-    app(file_path=file_path, target=target, json=json, out=output_file)
+    app(file_path=file_path, target=target, json=json, out=output_file, exact_match=exact_match)
 
 
 if __name__ == "__main__":

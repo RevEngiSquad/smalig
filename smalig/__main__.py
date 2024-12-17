@@ -8,6 +8,11 @@ if __name__ == "__main__":
         help()
         sys.exit(0)
 
+    if "-m" in args:
+        exact_match = False
+    else:
+        exact_match = True
+
     if "-o" in args:
         try:
             output_file = args[args.index("-o") + 1]
@@ -51,4 +56,4 @@ if __name__ == "__main__":
     if file_path == "":
         raise Exception("File path is empty")
 
-    app(file_path=file_path, target=target, json=json, out=output_file)
+    app(file_path=file_path, target=target, json=json, out=output_file, exact_match=exact_match)

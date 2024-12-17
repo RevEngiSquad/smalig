@@ -2,7 +2,6 @@ import os
 import yaml
 
 from io import StringIO
-from typing import List, Dict
 
 cls = lambda: print("\033c", end="")
 
@@ -18,47 +17,54 @@ class YamlReader:
         else:
             file_object = filename
         self.yamlf = file_object
-        self.data: List[Dict] = self.read_yaml()
+        self.data: list[dict] = self.read_yaml()
 
-    def read_yaml(self) -> List[Dict]:
+    def read_yaml(self) -> list[dict]:
         return yaml.load(self.yamlf, Loader=yaml.FullLoader)
 
 
 class InstructionFetch:
-    def __init__(self, instructions: List[Dict], target: str):
+    def __init__(self, instructions: list[dict], target: str, exact_match: bool = True):
         self.instructions = instructions
         self.target: str = target
-        self.result: Dict = self.fetch()
-        self.name: str = self.result["name"]
-        self.opcode: int = self.result["opcode"]
-        self.format: str = self.result["format"]
-        self.format_id: str = self.result["format_id"]
-        self.syntax: str = self.result["syntax"]
-        self.args_info: str = self.result["args_info"]
-        self.short_desc: str = self.result["short_desc"]
-        self.long_desc: str = self.result["long_desc"]
-        self.note: str = self.result["note"]
-        self.example: str = self.result["example"]
-        self.example_desc: str = self.result["example_desc"]
+        self.result: dict | list[dict] = self.fetch() if exact_match else self.fetch_fuzzy()
 
     def __str__(self):
-        results = f"Opcode: {self.opcode}\n"
-        results += f"Name: {self.name}\n"
-        results += f"Format: {self.format}\n"
-        results += f"Format ID: {self.format_id}\n"
-        results += f"Syntax: {self.syntax}\n"
-        results += f"Args: {self.args_info}\n"
-        results += f"Short Info: {self.short_desc}\n"
-        results += f"Detailed Info: {self.long_desc}\n"
-        results += f"Note: {self.note}\n" if self.note else ""
-        results += f"Example: {self.example}\n"
-        results += f"  Desc: {self.example_desc}"
+        if isinstance(self.result, dict):
+            results = f"Opcode: {self.result['opcode']}\n"
+            results += f"Name: {self.result['name']}\n"
+            results += f"Format: {self.result['format']}\n"
+            results += f"Format ID: {self.result['format_id']}\n"
+            results += f"Syntax: {self.result['syntax']}\n"
+            results += f"Args: {self.result['args_info']}\n"
+            results += f"Short Info: {self.result['short_desc']}\n"
+            results += f"Detailed Info: {self.result['long_desc']}\n"
+            results += f"Note: {self.result['note']}\n" if self.result.get("note") else ""
+            results += f"Example: {self.result['example']}\n"
+            results += f"  Desc: {self.result['example_desc']}"
+        elif isinstance(self.result, list):
+            results = ""
+            for ith, instruction in enumerate(self.result):
+                results += f"Result {ith + 1}:\n"
+                results += f"Opcode: {instruction['opcode']}\n"
+                results += f"Name: {instruction['name']}\n"
+                results += f"Format: {instruction['format']}\n"
+                results += f"Format ID: {instruction['format_id']}\n"
+                results += f"Syntax: {instruction['syntax']}\n"
+                results += f"Args: {instruction['args_info']}\n"
+                results += f"Short Info: {instruction['short_desc']}\n"
+                results += f"Detailed Info: {instruction['long_desc']}\n"
+                results += f"Note: {instruction['note']}\n" if instruction['note'] else ""
+                results += f"Example: {instruction['example']}\n"
+                results += f"  Desc: {instruction['example_desc']}\n\n"
+        else:
+            results = "No matching instructions found."
         return results
 
     def __repr__(self):
         return f"InstructionFetch(instructions={self.instructions}, target={self.target}, name={self.name}, opcode={self.opcode}, format={self.format}, format_id={self.format_id}, syntax={self.syntax}, args_info={self.args_info}, short_desc={self.short_desc}, long_desc={self.long_desc}, note={self.note}, example={self.example}, example_desc={self.example_desc})"
 
-    def fetch(self) -> Dict:
+    def fetch(self) -> dict:
         for instruction in self.instructions:
             if instruction["opcode"] == self.target:
                 return instruction
@@ -66,14 +72,21 @@ class InstructionFetch:
             if instruction["name"] == self.target:
                 return instruction
         return {}
+    
+    def fetch_fuzzy(self) -> list[dict]:
+        results = []
+        for instruction in self.instructions:
+            if self.target.lower() in instruction["name"].lower():
+                results.append(instruction)
+        return results
 
-    def fetch_opcode(self) -> Dict:
+    def fetch_opcode(self) -> dict:
         for instruction in self.instructions:
             if instruction["opcode"] == self.target:
                 return instruction
         return {}
 
-    def fetch_inst(self) -> Dict:
+    def fetch_inst(self) -> dict:
         for instruction in self.instructions:
             if instruction["name"] == self.target:
                 return instruction

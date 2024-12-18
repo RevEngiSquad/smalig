@@ -40,8 +40,8 @@ class InstructionFetch:
             results += f"Short Info: {self.result['short_desc']}\n"
             results += f"Detailed Info: {self.result['long_desc']}\n"
             results += f"Note: {self.result['note']}\n" if self.result.get("note") else ""
-            results += f"Example: {self.result['example']}\n"
-            results += f"  Desc: {self.result['example_desc']}"
+            results += f"Example: {self.result['example']}\n" if self.result.get("example") else ""
+            results += f"  Desc: {self.result['example_desc']}" if self.result.get("example_desc") else ""
         elif isinstance(self.result, list):
             results = ""
             for ith, instruction in enumerate(self.result):
@@ -55,8 +55,8 @@ class InstructionFetch:
                 results += f"Short Info: {instruction['short_desc']}\n"
                 results += f"Detailed Info: {instruction['long_desc']}\n"
                 results += f"Note: {instruction['note']}\n" if instruction['note'] else ""
-                results += f"Example: {instruction['example']}\n"
-                results += f"  Desc: {instruction['example_desc']}\n\n"
+                results += f"Example: {instruction['example']}\n" if instruction['example'] else ""
+                results += f"  Desc: {instruction['example_desc']}\n\n" if instruction['example_desc'] else ""
         else:
             results = "No matching instructions found."
         return results

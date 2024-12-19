@@ -1,3 +1,4 @@
+<a name="readme-top"></a>
 # smalig
 
 Dalvik(Smali) ByteCode info (grammar) fetch tool written in Python.

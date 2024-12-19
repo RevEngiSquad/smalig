@@ -183,6 +183,18 @@
   example: "0D19 - move-exception v25"
   example_desc: "Moves the caught exception into register v25."
 
+- opcode: "0E"
+  name: "return-void"
+  format: "ØØ|op"
+  format_id: "10x"
+  syntax: "return-void"
+  args_info: ""
+  short_desc: "Return from a void method."
+  long_desc: "Return without a return value, used in void type methods."
+  note: ""
+  example: "0E00 - return-void"
+  example_desc: "Return of a void method without return value."
+
 - opcode: "28"
   name: "goto"
   format: "AA|op"

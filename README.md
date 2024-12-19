@@ -1,11 +1,10 @@
-<a name="readme-top"></a>
 # smalig
 
 Dalvik(Smali) ByteCode info (grammar) fetch tool written in Python.
 
 ## Description
 
-`smalig` is a tool designed to fetch information about Dalvik(Smali) bytecode instructions. It allows users to specify a target instruction and retrieve detailed information about it, either in plain text or JSON format. This tool is particularly useful for developers and reverse engineers working with Android bytecode. Although there are many tools & resources available which does same job like [Dalvik Bytecode Reference](https://source.android.com/devices/tech/dalvik/dalvik-bytecode), Some chinese applications like MT Manager, NP, etc. but they all are very limited or little complex to understand and some are even outdated with no new instructions added. This tool is designed to be used from command line and can be integrated with other tools. We created it for our use in RevEngi project and decided to share it in the hope that it will be useful to others.
+`smalig` is a tool designed to fetch information about Dalvik(Smali) bytecode instructions. It allows users to specify a target instruction and retrieve detailed information about it, either in plain text or JSON format. This tool is particularly useful for developers and reverse engineers working with Android bytecode. Although there are many tools & resources available which does same job like [Dalvik Bytecode Reference](https://source.android.com/devices/tech/dalvik/dalvik-bytecode), Some chinese applications like MT Manager, NP, etc. but they all are very limited or little complex to understand and some are even outdated with no new instructions added. We created it for our use in RevEngi project and decided to share it in the hope that it will be useful to others.
 
 ## Features
 
@@ -151,5 +150,3 @@ Don't forget to star the repository if you found it useful.
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-<p align="right"><a href="#readme-top">Go to top</a></p>

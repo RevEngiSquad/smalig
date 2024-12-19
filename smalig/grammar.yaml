@@ -85,7 +85,7 @@
   long_desc: "Move the value (long/double) of the (vBBBB, vBBBB+1) register-pair to the (vAA, vAA+1) register-pair. vB must be in the 64k register range (0-65535) while vA is one of the first 256 registers (0-255)."
   note: "It is legal to move from vN to either vN-1 or vN+1, so implementations must arrange for both halves of a register-pair to be read before anything is written."
   example: "0516 0000 - move-wide/from16 v22, v0"
-  example_desc: "Moves v0 into v22."
+  example_desc: "Moves the value of register-pair (v0, v0+1) into (v22, v22+1)."
 
 - opcode: "06"
   name: "move-wide/16"

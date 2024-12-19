@@ -135,7 +135,7 @@
   example: "{todo}"
   example_desc: "Move the object reference from {todo} to {todo}."
 
-- opcode: "0a"
+- opcode: "0A"
   name: "move-result"
   format: "AA|op"
   format_id: "11x"
@@ -147,7 +147,7 @@
   example: "0A00 - move-result v0"
   example_desc: "Move the return value of a previous method invocation into v0."
 
-- opcode: "0b"
+- opcode: "0B"
   name: "move-result-wide"
   format: "AA|op"
   format_id: "11x"
@@ -159,7 +159,7 @@
   example: "0B02 - move-result-wide v2"
   example_desc: "Move the long/double result value of the previous method invocation into v2,v3."
 
-- opcode: "0c"
+- opcode: "0C"
   name: "move-result-object"
   format: "AA|op"
   format_id: "11x"
@@ -171,7 +171,7 @@
   example: "0C00 - move-result-object v0"
   example_desc: "Move the object result of the previous method invocation into v0."
 
-- opcode: "0d"
+- opcode: "0D"
   name: "move-exception"
   format: "AA|op"
   format_id: "11x"

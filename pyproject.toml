@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smalig"
-version = "0.1.0"
+version = "0.1.5"
 description = "Smali ByteCode info (grammar) fetch tool written in Python"
 authors = [
     { name = "AbhiTheModder", email = "allinoneallinone00@gmail.com" },

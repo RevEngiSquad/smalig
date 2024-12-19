@@ -72,8 +72,8 @@
   short_desc: "Move the contents of one register-pair to another."
   long_desc: "Move the value of the (vB, vB+1) register-pair to the (vA, vA+1) register-pair. Both register-pairs must be in the first 16 register range (0-15)."
   note: "It is legal to move from vN to either vN-1 or vN+1, so implementations must arrange for both halves of a register-pair to be read before anything is written."
-  example: "{todo} - move-wide v1, v2"
-  example_desc: "Moves the value from register-pair (v2, v3) to register-pair (v1, v2)."
+  example: "{todo}"
+  example_desc: "Moves the value from register-pair {todo} to register-pair {todo}."
 
 - opcode: "05"
   name: "move-wide/from16"
@@ -96,8 +96,8 @@
   short_desc: "Move the contents of one register-pair to another."
   long_desc: "Move the value of the (vBBBB, vBBBB+1) register-pair to the (vAAAA, vAAAA+1) register-pair. Both register-pairs must be in the first 64k register range (0-65535) & 16 bits."
   note: "It is legal to move from vN to either vN-1 or vN+1, so implementations must arrange for both halves of a register-pair to be read before anything is written."
-  example: "{todo} - move-wide/16 v23, v17"
-  example_desc: "Moves the value from register-pair (v17, v18) to register-pair (v23, v24)."
+  example: "{todo}"
+  example_desc: "Moves the value from register-pair {todo} to register-pair {todo}."
 
 - opcode: "07"
   name: "move-object"
@@ -132,8 +132,8 @@
   short_desc: "Move the contents of one object-bearing register to another."
   long_desc: "Move the object reference from the source register vBBBB to the destination register vAAAA. Both source and destination registers can address 64k registers (0-65535)."
   note: ""
-  example: "{todo} - move-object/16 v0, v18"
-  example_desc: "Move the object reference from v18 to v0."
+  example: "{todo}"
+  example_desc: "Move the object reference from {todo} to {todo}."
 
 - opcode: "0a"
   name: "move-result"

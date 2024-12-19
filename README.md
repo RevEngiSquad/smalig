@@ -37,10 +37,11 @@ You can use `smalig` from the command line. Below are some examples of how to us
 smalig -t "move"  # Fetch information for the 'move' instruction.
 smalig -t "invoke-virtual" -j -o output.json # Fetch and save as JSON
 smalig -o my_output.txt # Prompts for instruction then saves to my_output.txt
+smalig -t "move" -m # Enable fuzzy matching
 ```
 
 **Output:**
-
+Normal output:
 ```plaintext
 Opcode: 01
 Name: move
@@ -54,12 +55,59 @@ Example: 0110 - move v0, v1
   Desc: Moves the content of v1 into v0.
 ```
 
+With Fuzzy matching:
+```plaintext
+Result 1:
+Opcode: 01
+Name: move
+Format: B|A|op
+Format ID: 12x
+Syntax: move vA, vB
+Args: A: destination register (4 bits), B: source register (4 bits)
+Short Info: Move the contents of one non-object register to another.
+Detailed Info: Moves the content of vB into vA. Both registers must be in the first 16 register range (0-15).
+Example: 0110 - move v0, v1
+  Desc: Moves the content of v1 into v0.
+
+Result 2:
+Opcode: 02
+Name: move/from16
+Format: AA|op BBBB
+Format ID: 22x
+Syntax: move/from16 vAA, vBBBB
+Args: A: destination register (8 bits), B: source register (16 bits)
+Short Info: Move the contents of one non-object register to another.
+Detailed Info: Moves the content of vB into vA. vB must be in the 64k register range (0-65535) while vA is one of the first 256 registers (0-255).
+Example: 0200 1900 - move/from16 v0, v25
+  Desc: Moves the content of v25 into v0.
+
+....(Redacted for brevity)
+```
+
+JSON output:
+```json
+{
+    "opcode": "01",
+    "name": "move",
+    "format": "B|A|op",
+    "format_id": "12x",
+    "syntax": "move vA, vB",
+    "args_info": "A: destination register (4 bits), B: source register (4 bits)",
+    "short_desc": "Move the contents of one non-object register to another.",
+    "long_desc": "Moves the content of vB into vA. Both registers must be in the first 16 register range (0-15).",
+    "note": "",
+    "example": "0110 - move v0, v1",
+    "example_desc": "Moves the content of v1 into v0."
+}
+```
+
 As shown in the above example output, we've gone ahead and provided more detailed information about the instruction. This includes the opcode, format, syntax, arguments, and examples. This information can be useful for understanding the instruction and how it is used in Dalvik bytecode even for beginners.
 
 ### Command Line Options
 
 - `-t TARGET`: Specify the Smali instruction to fetch. If omitted, prompts the user for input.
 - `-j`: Output the result as JSON. If `-o` is also specified and the `OUTPUT_FILE` ends in `.json`, this flag is automatically set.
+- `-m`: Enable fuzzy matching for the target instruction. This allows for partial matches.
 - `-o OUTPUT_FILE`: Write the output to the specified file. If omitted, prints to console.
 
 ## Contributing
@@ -103,9 +151,5 @@ Don't forget to star the repository if you found it useful.
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Authors
-
-- [Abhi](https://github.com/AbhiTheModder)
 
 <p align="right"><a href="#readme-top">Go to top</a></p>

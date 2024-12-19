@@ -106,6 +106,6 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Authors
 
-- AbhiTheModder (allinoneallinone00@gmail.com)
+- [Abhi](https://github.com/AbhiTheModder)
 
 <p align="right"><a href="#readme-top">Go to top</a></p>

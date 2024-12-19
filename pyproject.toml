@@ -35,8 +35,9 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/RevEngiSquad/smalig"
-Repository = "https://github.com/RevEngiSquad/smalig"
+homepage = "https://github.com/RevEngiSquad/smalig"
+source = "https://github.com/RevEngiSquad/smalig"
+issues = "https://github.com/RevEngiSquad/smalig/issues"
 
 [project.scripts]
 smalig = "smalig.cli.app:main"

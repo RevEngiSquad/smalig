@@ -4,14 +4,14 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "smalig"
-version = "0.1.6"
+version = "0.1.7"
 description = "Smali ByteCode info (grammar) fetch tool written in Python"
 authors = [
     { name = "AbhiTheModder", email = "allinoneallinone00@gmail.com" },
 ]
 license = {file = "LICENSE"}
 readme = "README.md"
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 keywords = ["smali", "grammar", "parser", "android", "reverse-engineering"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -19,7 +19,6 @@ classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",

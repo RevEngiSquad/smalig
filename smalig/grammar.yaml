@@ -307,6 +307,18 @@
   example: "1702 4E61 BC00 - const-wide/32 v2, 0x00bc614e"
   example_disc: "Moves the long literal value 0x00bc614e into (v2,v3) register-pair."
 
+- opcode: "18"
+  name: "const-wide"
+  format: "AA|op BBBBlo BBBB BBBB BBBBhi"
+  format_id: "51l"
+  syntax: "const-wide vAA, #+BBBBBBBBBBBBBBBB"
+  args_info: "A: destination register (8 bits), B: signed int (64 bits)"
+  short_desc: "Move the given literal value into the specified register-pair."
+  long_desc: "Moves the literal value constant BBBBBBBBBBBBBBBB into register-pair (vAA, vAA+1). The value of BBBBBBBBBBBBBBBB is in the range -9223372036854775808 to 9223372036854775807 (-0x8000000000000000 to 0x7FFFFFFFFFFFFFFF)."
+  note: ""
+  example: "1802 874b 6b5d 54dc 2b00- const-wide v2, 0x002bdc545d6b4b87 (#long 12345678901234567)"
+  example_disc: "Moves the long literal value 0x002bdc545d6b4b87 into (v2,v3) register-pair."
+
 - opcode: "19"
   name: "const-wide/high16"
   format: "AA|op BBBB"

@@ -3,7 +3,13 @@ import yaml
 
 from io import StringIO
 
-cls = lambda: print("\033c", end="")
+
+def cls():
+    print("\033c", end="")
+
+
+def grammar_yaml() -> str:
+    return os.path.join(os.path.dirname(os.path.dirname(__file__)), "grammar.yaml")
 
 
 class YamlReader:
@@ -27,7 +33,9 @@ class InstructionFetch:
     def __init__(self, instructions: list[dict], target: str, exact_match: bool = True):
         self.instructions = instructions
         self.target: str = target
-        self.result: dict | list[dict] = self.fetch() if exact_match else self.fetch_fuzzy()
+        self.result: dict | list[dict] = (
+            self.fetch() if exact_match else self.fetch_fuzzy()
+        )
 
     def __str__(self):
         if isinstance(self.result, dict):
@@ -39,9 +47,19 @@ class InstructionFetch:
             results += f"Args: {self.result['args_info']}\n"
             results += f"Short Info: {self.result['short_desc']}\n"
             results += f"Detailed Info: {self.result['long_desc']}\n"
-            results += f"Note: {self.result['note']}\n" if self.result.get("note") else ""
-            results += f"Example: {self.result['example']}\n" if self.result.get("example") else ""
-            results += f"  Desc: {self.result['example_desc']}" if self.result.get("example_desc") else ""
+            results += (
+                f"Note: {self.result['note']}\n" if self.result.get("note") else ""
+            )
+            results += (
+                f"Example: {self.result['example']}\n"
+                if self.result.get("example")
+                else ""
+            )
+            results += (
+                f"  Desc: {self.result['example_desc']}"
+                if self.result.get("example_desc")
+                else ""
+            )
         elif isinstance(self.result, list):
             results = ""
             for ith, instruction in enumerate(self.result):
@@ -54,15 +72,33 @@ class InstructionFetch:
                 results += f"Args: {instruction['args_info']}\n"
                 results += f"Short Info: {instruction['short_desc']}\n"
                 results += f"Detailed Info: {instruction['long_desc']}\n"
-                results += f"Note: {instruction['note']}\n" if instruction['note'] else ""
-                results += f"Example: {instruction['example']}\n" if instruction['example'] else ""
-                results += f"  Desc: {instruction['example_desc']}\n\n" if instruction['example_desc'] else ""
+                results += (
+                    f"Note: {instruction['note']}\n" if instruction["note"] else ""
+                )
+                results += (
+                    f"Example: {instruction['example']}\n"
+                    if instruction["example"]
+                    else ""
+                )
+                results += (
+                    f"  Desc: {instruction['example_desc']}\n\n"
+                    if instruction["example_desc"]
+                    else ""
+                )
         else:
             results = "No matching instructions found."
         return results
 
     def __repr__(self):
-        return f"InstructionFetch(instructions={self.instructions}, target={self.target}, name={self.name}, opcode={self.opcode}, format={self.format}, format_id={self.format_id}, syntax={self.syntax}, args_info={self.args_info}, short_desc={self.short_desc}, long_desc={self.long_desc}, note={self.note}, example={self.example}, example_desc={self.example_desc})"
+        return (
+            f"InstructionFetch(instructions={self.instructions}, "
+            f"target={self.target}, name={self.name}, "
+            f"opcode={self.opcode}, format={self.format}, "
+            f"format_id={self.format_id}, syntax={self.syntax}, "
+            f"args_info={self.args_info}, short_desc={self.short_desc}, "
+            f"long_desc={self.long_desc}, note={self.note}, "
+            f"example={self.example}, example_desc={self.example_desc})"
+        )
 
     def fetch(self) -> dict:
         for instruction in self.instructions:
@@ -72,7 +108,7 @@ class InstructionFetch:
             if instruction["name"] == self.target:
                 return instruction
         return {}
-    
+
     def fetch_fuzzy(self) -> list[dict]:
         results = []
         for instruction in self.instructions:

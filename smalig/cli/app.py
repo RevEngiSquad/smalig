@@ -1,36 +1,22 @@
-import sys
+import argparse
 import json as js
 import jsbeautifier
-import importlib.resources
-import textwrap
 
-from smalig import YamlReader, InstructionFetch, cls
+from smalig import YamlReader, InstructionFetch, cls, grammar_yaml
 
 
-def help() -> None:
-    help_message = """
-    smalig: Smali ByteCode info (grammar) fetch tool
-
-    Usage: smalig [-t TARGET [-j] [-o OUTPUT_FILE]
-
-    Options:
-      -t TARGET  Specify the Smali instruction to fetch.  If omitted, 
-                 prompts the user for input.
-      -j         Output the result as JSON.  If -o is also specified and the 
-                 OUTPUT_FILE ends in '.json', this flag is automatically set.
-      -o OUTPUT_FILE Write the output to the specified file.  If omitted, prints to console.
-
-    Examples:
-      smalig -t "const-string"  # Fetch information for the 'const-string' instruction.
-      smalig -t "invoke-virtual" -j -o output.json # Fetch and save as JSON
-      smalig -o my_output.txt # Prompts for instruction then saves to my_output.txt
-
-
-    If no target is specified using -t, the tool will prompt for input.
-
-    If no -o flag is used, the output goes to stdout.  If a file is specified without a .json extension, plain text output is generated.
-    """
-    print(textwrap.dedent(help_message))
+EXAMPLES = """
+examples:
+    smalig                                          # Prompts for instruction then fetch it's information.
+    smalig -m                                       # Prompts for instruction then fetch it's information with fuzzy match.
+    smalig -t "move"                                # Fetch information for the 'move' instruction.
+    smalig -t "move" -j                             # Output as JSON
+    smalig -t "invoke-virtual" -j -o output.json    # Fetch and save as JSON
+    smalig -o my_output.txt                         # Prompts for instruction then saves to my_output.txt
+    smalig -t "move" -m                             # Fuzzy match
+    smalig -t "move" -o my_output.json              # Save as JSON
+    smalig -t "move" -o my_output.txt               # Save as plain text
+"""
 
 
 def app(file_path, target, json, out, exact_match) -> None:
@@ -74,60 +60,65 @@ def app(file_path, target, json, out, exact_match) -> None:
     return
 
 
-def main() -> None:
-    """
-    Main function
-    """
-    args = sys.argv[1:]
+def parse_args():
+    parser = argparse.ArgumentParser(
+        prog="smalig",
+        description="Smali ByteCode info (grammar) fetch tool",
+        epilog=EXAMPLES,
+        formatter_class=argparse.RawTextHelpFormatter,
+    )
+    parser.add_argument("-m", action="store_true", help="Enable fuzzy match")
+    parser.add_argument(
+        "-o",
+        metavar="OUTPUT_FILE",
+        help="Specify output file. If omitted, prints to console.",
+    )
+    parser.add_argument(
+        "-t",
+        metavar="TARGET",
+        help="Specify the Smali instruction to fetch. If omitted, prompts the user for input.",
+    )
+    parser.add_argument(
+        "-j",
+        action="store_true",
+        help="Enable JSON output. If omitted and OUTPUT_FILE ends in '.json', this flag is automatically set.",
+    )
+    return parser.parse_args()
 
-    if "-h" in args or "--help" in args:
-        help()
-        return
-    
-    if "-m" in args:
-        exact_match = False
+
+def get_target(args):
+    if args.t:
+        return args.t
     else:
-        exact_match = True
+        target = input("Search instruction: ")
+        cls()
+        return target
 
-    if "-o" in args:
-        try:
-            output_file = args[args.index("-o") + 1]
-        except IndexError:
-            output_file = None
+
+def get_json(args, output_file):
+    if args.j:
+        return True
+    elif output_file and output_file.endswith(".json"):
+        return True
     else:
-        output_file = None
+        return False
 
-    with importlib.resources.path("smalig", "grammar.yaml") as file_path:
-        file_path = str(file_path)
 
-    if "-t" in args:
-        try:
-            target = args[args.index("-t") + 1]
-        except IndexError:
-            target = ""
-    else:
-        try:
-            target = input(f"Enter Query: ")
-            cls()
-        except KeyboardInterrupt:
-            print("\nExiting...")
-            return
+def main():
+    args = parse_args()
+    file_path = grammar_yaml()
+    target = get_target(args)
+    if not target:
+        exit("Query is empty!")
+    json_output = get_json(args, args.o)
 
-    if "-j" in args:
-        json = True
-    else:
-        if output_file and output_file.endswith(".json"):
-            json = True
-        else:
-            json = False
-
-    if target == "":
-        raise Exception("Query is empty")
-
-    if file_path == "":
-        raise Exception("File path is empty")
-
-    app(file_path=file_path, target=target, json=json, out=output_file, exact_match=exact_match)
+    app(
+        file_path=file_path,
+        target=target,
+        json=json_output,
+        out=args.o,
+        exact_match=not args.m,
+    )
 
 
 if __name__ == "__main__":

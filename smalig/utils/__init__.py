@@ -39,6 +39,9 @@ class InstructionFetch:
 
     def __str__(self):
         if isinstance(self.result, dict):
+            if not self.result:
+                results = f"No instruction found for {self.target}!"
+                return results
             results = f"Opcode: {self.result['opcode']}\n"
             results += f"Name: {self.result['name']}\n"
             results += f"Format: {self.result['format']}\n"

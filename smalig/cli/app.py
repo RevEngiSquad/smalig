@@ -1,6 +1,5 @@
 import argparse
 import json as js
-import jsbeautifier
 
 from smalig import YamlReader, InstructionFetch, cls, grammar_yaml
 
@@ -45,7 +44,7 @@ def app(file_path, target, json, out, exact_match) -> None:
         print(f"{target} not found!")
         return
     if json:
-        format_code = jsbeautifier.beautify(js.dumps(result.result))
+        format_code = js.dumps(result.result, indent=4)
         if out:
             with open(out, "w") as f:
                 f.write(format_code)

@@ -38,6 +38,9 @@ class InstructionFetch:
         )
 
     def __str__(self):
+        """
+        Returns the result in a human-readable format.
+        """
         if isinstance(self.result, dict):
             if not self.result:
                 results = f"No instruction found for {self.target}!"
@@ -93,6 +96,7 @@ class InstructionFetch:
         return results
 
     def __repr__(self):
+        """Return a string representation of the InstructionFetch object."""
         return (
             f"InstructionFetch(instructions={self.instructions}, "
             f"target={self.target}, name={self.name}, "
@@ -104,6 +108,7 @@ class InstructionFetch:
         )
 
     def fetch(self) -> dict:
+        """Fetch the instruction from the instruction set."""
         for instruction in self.instructions:
             if instruction["opcode"] == self.target:
                 return instruction
@@ -113,6 +118,7 @@ class InstructionFetch:
         return {}
 
     def fetch_fuzzy(self) -> list[dict]:
+        """Fetch the instruction from the instruction set using fuzzy matching."""
         results = []
         for instruction in self.instructions:
             if self.target.lower() in instruction["name"].lower():
@@ -120,13 +126,47 @@ class InstructionFetch:
         return results
 
     def fetch_opcode(self) -> dict:
+        """Fetch the instruction from the instruction set using the opcode."""
         for instruction in self.instructions:
             if instruction["opcode"] == self.target:
                 return instruction
         return {}
 
     def fetch_inst(self) -> dict:
+        """Fetch the instruction from the instruction set using the name."""
         for instruction in self.instructions:
             if instruction["name"] == self.target:
                 return instruction
         return {}
+
+    def replace(self, type: str = "ansi"):
+        """
+        Replace $ and ` symbols with given type.
+        type: str = "ansi" -> "ansi" or "html" or "markdown" or "md" or "plain"
+        """
+        if type in ["html", "markdown", "md"]:
+            result = self.__str__()
+            while result.find("$") != -1:
+                result = result.replace("$", "<span style='color: #ff0;'>", 1)
+                result = result.replace("$", "</span>", 1)
+            while result.find("`") != -1:
+                result = result.replace("`", "<code>", 1)
+                result = result.replace("`", "</code>", 1)
+        elif type == "plain":
+            result = self.__str__()
+            while result.find("$") != -1:
+                result = result.replace("$", "", 1)
+            while result.find("`") != -1:
+                result = result.replace("`", "", 1)
+        else:
+            NC = "\033[0m"  # No Color
+            YELLOW = "\033[0;33m"
+            BLUE = "\033[3;34m"
+            result = self.__str__()
+            while result.find("$") != -1:
+                result = result.replace("$", YELLOW, 1)
+                result = result.replace("$", NC, 1)
+            while result.find("`") != -1:
+                result = result.replace("`", BLUE, 1)
+                result = result.replace("`", NC, 1)
+        return result

@@ -53,9 +53,9 @@ def app(file_path, target, json, out, exact_match) -> None:
         return
     if out:
         with open(out, "w") as f:
-            f.write(str(result))
+            f.write(str(result.replace("plain")))
     else:
-        print(result)
+        print(result.replace())
     return
 
 
